@@ -25,38 +25,27 @@ config system settings
  set vpn-stats-period 300 
 End
 
-
-
 config vpn ipsec phase2-interface 
  set auto-negotiate enable 
  next 
 
-### 
- 
 #arp
 get system arp 
 
 #ping tests
 execute ping-options source 192.168.2.1 
 
-
 #enable scp 
 config system global 
   set admin-scp enable 
 end 
 
- 
-
 #show dhcp lease 
 execute dhcp lease-list 
-
- 
 
 #set up rsa keys for ssh 
 config system admin 
 set ssh-public-key1 “ssh-rsa” 
-
- 
 
 #Commands to update license.. 
 diag deb reset  
