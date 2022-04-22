@@ -1,0 +1,175 @@
+5.1 Looking for BGP routes in the routing table 
+
+ 
+
+FGT# get router info routing-table all 
+
+ 
+
+or use a BGP filter: 
+
+ 
+
+FGT# get router info routing-table bgp 
+
+ 
+
+ 
+
+Example output: 
+
+ 
+
+FGT# get router info routing-table all 
+
+ 
+
+Codes: K - kernel, C - connected, S - static, R - RIP, B - BGP 
+
+O - OSPF, IA - OSPF inter area 
+
+N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2 
+
+E1 - OSPF external type 1, E2 - OSPF external type 2 
+
+i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area 
+
+* - candidate default 
+
+ 
+
+B* 0.0.0.0/0 [200/0] via 10.142.0.110 (recursive via 10.160.0.74), 2d18h00m 
+
+B 1.0.0.0/8 [200/0] via 10.142.0.110 (recursive via 10.160.0.74), 2d18h00m 
+
+B 2.0.0.0/8 [200/0] via 10.142.0.110 (recursive via 10.160.0.74), 2d18h00m 
+
+O 10.0.0.2/32 [110/110] via 10.160.0.74, dmz, 2d18h20m 
+
+C 10.0.0.3/32 is directly connected, loopback 
+
+ 
+
+5.2 Check if BGP peering is up 
+
+ 
+
+FGT # get router info bgp summary 
+
+ 
+
+Example output: 
+
+BGP router identifier 192.168.182.106, local AS number 106 
+
+BGP table version is 1 
+
+0 BGP AS-PATH entries 
+
+0 BGP community entries 
+
+ 
+
+Neighbor V AS MsgRcvd MsgSent TblVer InQ OutQ Up/Down State/PfxRcd 
+
+10.160.0.58 4 58 2 2 0 0 0 00:00:08 0 
+
+ 
+
+Total number of neighbors 1 
+
+ 
+
+FGT # get router info bgp neighbors 
+
+ 
+
+Example output: 
+
+ 
+
+BGP neighbor is 10.160.0.58, remote AS 58, local AS 106, external link 
+
+BGP version 4, remote router ID 192.168.182.58 
+
+BGP state = Established, up for 00:00:17 
+
+Last read 00:00:17, hold time is 180, keepalive interval is 60 seconds 
+
+Configured hold time is 180, keepalive interval is 60 seconds 
+
+Neighbor capabilities: 
+
+Route refresh: advertised and received (old and new) 
+
+Address family IPv4 Unicast: advertised and received 
+
+Received 2 messages, 0 notifications, 0 in queue 
+
+Sent 2 messages, 0 notifications, 0 in queue 
+
+Route refresh request: received 0, sent 0 
+
+Minimum time between advertisement runs is 30 seconds 
+
+ 
+
+For address family: IPv4 Unicast 
+
+BGP table version 1, neighbor version 0 
+
+Index 2, Offset 0, Mask 0x4 
+
+Community attribute sent to this neighbor (both) 
+
+0 accepted prefixes 
+
+0 announced prefixes 
+
+ 
+
+Connections established 1; dropped 0 
+
+Local host: 10.160.0.106, Local port: 1054 
+
+Foreign host: 10.160.0.58, Foreign port: 179 
+
+Nexthop: 10.160.0.106 
+
+  
+
+5.3     If no peer(s) can be seen, check L3 connectivity to the peer(s) 
+
+ 
+
+FGT # execute ping <peer_ip> 
+
+ 
+
+Example output: 
+
+ 
+
+FGT # execute ping 10.160.0.58 
+
+PING 10.160.0.58 (10.160.0.58): 56 data bytes 
+
+64 bytes from 10.160.0.58: icmp_seq=0 ttl=255 time=0.5 ms 
+
+64 bytes from 10.160.0.58: icmp_seq=1 ttl=255 time=0.3 ms 
+
+64 bytes from 10.160.0.58: icmp_seq=2 ttl=255 time=0.3 ms 
+
+  
+
+5.4    Further troubleshooting can be performed by looking at each packet received, sent, and processed, with the the following command. 
+
+This command may generate some extensive output. It is also possible to use more specific debug filters instead of "all" to reduce the verbosity. 
+
+ 
+
+FGT # diagnose ip router bgp all (enable|disable) 
+
+FGT # diagnose debug enable 
+
+  
